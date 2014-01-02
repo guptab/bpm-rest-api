@@ -41,10 +41,10 @@ public class RestApi {
 		  	URL deploymentUrl;
 		  	String userId = "admin";
 		  	String password = "admin";
-		  	deploymentUrl = new URL("http://ustr-erl-1841:8080/jbpm-console/");
+		  	deploymentUrl = new URL("http://localhost:8080/jbpm-console/");
 		  	boolean like_BZ_994905 = false;		  	
 		  			  	
-		  	RemoteRestRuntimeFactory restSessionFactory = new RemoteRestRuntimeFactory("org.jbpm.example:async-examples:1.0", deploymentUrl, userId, password);
+		  	RemoteRestRuntimeFactory restSessionFactory = new RemoteRestRuntimeFactory("com.sample:HelloDtoProcess:1.0.0", deploymentUrl, userId, password);
 		    RuntimeEngine engine = restSessionFactory.newRuntimeEngine();      
 		    KieSession ksession = engine.getKieSession();
 		    		    
@@ -54,44 +54,7 @@ public class RestApi {
 		    helloObj.setRecipient("jBPM");
 		    String dto = jaxbSerializationProvider.serialize(helloObj);
 			params.put("helloDto1", dto);		    
-		    ProcessInstance processIns = ksession.startProcess("async-examples.HelloDtoProcess", params);
-		    
-		  	
-		  	/*
-		  	ClientRequestFactory requestFactory;
-
-		      if (like_BZ_994905)
-		      {
-		         DefaultHttpClient httpClient = new DefaultHttpClient();
-
-		         httpClient.getCredentialsProvider().setCredentials(
-		               new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM),
-		               new UsernamePasswordCredentials(userId, password));
-		         ClientExecutor clientExecutor = new ApacheHttpClient4Executor(httpClient);
-		         requestFactory = new ClientRequestFactory(clientExecutor, ResteasyProviderFactory.getInstance());
-		      }
-		      else
-		      {
-		         requestFactory = RestRequestHelper.createRestRequestFactory(deploymentUrl.toString(), userId, password, 600000);
-		      }   
-		      String urlString = null;
-		      urlString = "http://localhost:8080/jbpm-console/rest/runtime/com.sample:HelloWorld:1.0"
-			            + "/withvars/process/HelloWorld.HelloWorld/start";
-		      ClientRequest restRequest = requestFactory.createRequest(urlString); 
-		      
-		      BlueprintOid blueprint = new BlueprintOid("ryerfew7787");
-		      
-		      //restRequest.body(MediaType.APPLICATION_JSON, blueprint);
-		      
-		      //restRequest.queryParameter("map_blueprintId", blueprint);
-		      		                  
-		    	  String body = jsonSerializationProvider.serialize(blueprint);            
-		    	  restRequest.body(MediaType.APPLICATION_JSON, body);
-			
-
-		      ClientResponse<?> responseObj = checkResponse(restRequest.post());
-		      
-		      */
+		    ProcessInstance processIns = ksession.startProcess("com.sample.bpmn.hellodtoprocess", params);		
 		    
 	   }
 	  
